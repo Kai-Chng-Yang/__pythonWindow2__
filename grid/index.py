@@ -40,6 +40,7 @@ class Window(tk.Tk):
         ttk.Label(bottomFrame, text="姓名:", style='gridLabel.TLabel').grid(column=0, row=0, sticky=tk.E)
         nameEntry = ttk.Entry(bottomFrame,style='gridEntry.TEntry')
         nameEntry.grid(column=1,row=0,sticky=tk.W,padx=10)
+    
 
         ttk.Label(bottomFrame,text="出生年月日:",style='gridLabel.TLabel').grid(column=0,row=1,sticky=tk.E)
         ttk.Label(bottomFrame,text="(2000/03/01)",style='gridLabel.TLabel').grid(column=0,row=2,sticky=tk.E)
@@ -93,3 +94,4 @@ def main():
 if __name__ == "__main__":
     main()
 
+#round(self.weight / (self.height/100) ** 2, ndigits=2)
