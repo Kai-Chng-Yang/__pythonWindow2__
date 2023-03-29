@@ -4,7 +4,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
+from PIL import Image,ImageTk
 
 class Window(tk.Tk):
     def __init__(self,**kwargs):
@@ -25,7 +25,7 @@ class Window(tk.Tk):
         topFrame = ttk.Frame(mainFrame,height=100)
         topFrame.pack(fill=tk.X)
 
-        ttk.Label(topFrame,text="BMI試算",font=('Helvetica', '20')).pack(pady=20)
+        ttk.Label(topFrame,text="BMI試算",font=('Helvetica', '20')).pack(pady=(80,20))
 
         bottomFrame = ttk.Frame(mainFrame)
         bottomFrame.pack(expand=True,fill=tk.BOTH)
@@ -56,13 +56,12 @@ class Window(tk.Tk):
         weightEntry = ttk.Entry(bottomFrame,style='gridEntry.TEntry')
         weightEntry.grid(column=1,row=4,sticky=tk.W,padx=10)
 
-
         messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED,takefocus=0,bd=0)
         messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
 
-        #------commitFrame開始-----------
-        #有2個按鈕
-
+        #---------commitFrame開始--------------------
+        #有左右2個按鈕
+        #
         commitFrame = ttk.Frame(bottomFrame)
         commitFrame.grid(column=0,row=6,columnspan=2)
 
@@ -71,60 +70,14 @@ class Window(tk.Tk):
 
         clearBtn = ttk.Button(commitFrame,text="清除")
         clearBtn.grid(column=1,row=0,sticky=tk.E)
-        #------commitFrame結束-----------
+        #---------commitFrame結束--------------------
 
-
-        
-        self.height = tk.DoubleVar
-        self.weight = tk.DoubleVar
-
-        heightEntry.delete(0, tk.END)
-        weightEntry.delete(0, tk.END)
-
-        self.r = tk.DoubleVar
-        
-        
-        messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED,takefocus=0,bd=0)
-        messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
-
-        commitBtn = ttk.Button(bottomFrame,text="計算", command=calculate_BMI, font=12)
-        commitBtn.grid(column=1,row=6,sticky=tk.W)
-
-
-        self.ent6 = tk.Entry(self.win, textvariable=self.r)
-        self.ent6.delete(0, tk.END)
-        self.ent6.grid(row=6, columnspan=2, padx=10, pady=10)
-    
-        def calculate_BMI():
-            try:
-                self.r.set(self.weight / (self.height/100) ** 2)
-            except:
-                heightEntry.delete(0, tk.END)
-                weightEntry.delete(0, tk.END)
-                self.ent6.delete(0, tk.END)
-                
-            commitBtn = ttk.Button(bottomFrame,text="計算", command=calculate_BMI, font=12)
-            commitBtn.grid(column=1,row=6,sticky=tk.W)
-
-        
-
-
-
-'''class Window(tk.Tk):
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
-        ttkStyle = ttk.Style()
-        ttkStyle.configure('back.TFrame', background = "#ff5")
-        
-        mainFrame = ttk.Frame(self, style ='back.TFrame')
-        mainFrame.pack(expand = True, fill = tk.BOTH)
-
-        topFame = ttk.Frame(mainFrame, style ='back.TFrame')
-        topFame.pack(expand = True, fill = tk.X)
-
-        bottomFrame = ttk.Frame(mainFrame, style ='back.TFrame')
-        bottomFrame.pack(expand=True, fill=tk.BOTH)
-'''
+        #---------建立Logo--------------------
+        logoImage = Image.open('logo.jpg') #讀取圖片檔
+        resizeImage = logoImage.resize((180,45),Image.LANCZOS)
+        self.logoTKimage = ImageTk.PhotoImage(resizeImage)
+        logoLabel = ttk.Label(self, image=self.logoTKimage,width=180)
+        logoLabel.place(x=40,y=45)
 
 
 def main():
@@ -138,5 +91,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#round(self.weight / (self.height/100) ** 2, ndigits=2)
