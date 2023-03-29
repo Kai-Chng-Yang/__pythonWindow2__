@@ -4,6 +4,7 @@
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 
 class Window(tk.Tk):
     def __init__(self,**kwargs):
@@ -55,6 +56,7 @@ class Window(tk.Tk):
         weightEntry = ttk.Entry(bottomFrame,style='gridEntry.TEntry')
         weightEntry.grid(column=1,row=4,sticky=tk.W,padx=10)
 
+<<<<<<< HEAD
         messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED,takefocus=0,bd=0)
         messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
 
@@ -71,6 +73,39 @@ class Window(tk.Tk):
         clearBtn.grid(column=1,row=0,sticky=tk.E)
         #------commitFrame結束-----------
 
+
+        
+=======
+        self.height = tk.DoubleVar
+        self.weight = tk.DoubleVar
+
+        heightEntry.delete(0, tk.END)
+        weightEntry.delete(0, tk.END)
+
+        self.r = tk.DoubleVar
+        
+        
+        messageText = tk.Text(bottomFrame,height=5,width=35,state=tk.DISABLED,takefocus=0,bd=0)
+        messageText.grid(column=0,row=5,sticky=tk.N+tk.S,columnspan=2)
+
+        commitBtn = ttk.Button(bottomFrame,text="計算", command=calculate_BMI, font=12)
+        commitBtn.grid(column=1,row=6,sticky=tk.W)
+>>>>>>> b9dddce3bbad023668c89d356b3032c251177057
+
+        self.ent6 = tk.Entry(self.win, textvariable=self.r)
+        self.ent6.delete(0, tk.END)
+        self.ent6.grid(row=6, columnspan=2, padx=10, pady=10)
+    
+        def calculate_BMI():
+            try:
+                self.r.set(self.weight / (self.height/100) ** 2)
+            except:
+                heightEntry.delete(0, tk.END)
+                weightEntry.delete(0, tk.END)
+                self.ent6.delete(0, tk.END)
+                
+            commitBtn = ttk.Button(bottomFrame,text="計算", command=calculate_BMI, font=12)
+            commitBtn.grid(column=1,row=6,sticky=tk.W)
 
         
 
