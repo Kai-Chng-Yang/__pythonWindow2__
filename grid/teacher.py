@@ -79,6 +79,8 @@ class Window(tk.Tk):
         logoLabel = ttk.Label(self, image=self.logoTKimage,width=180)
         logoLabel.place(x=40,y=45)
 
+def close_window(w):
+    w.destroy()
 
 def main():
     '''
@@ -87,6 +89,8 @@ def main():
     window = Window()
     window.title("BMI計算")
     #window.geometry("400x500")
+    window.resizable(width=False,height=False)
+    window.protocol("WM_DELETE_WINDOW",lambda:close_window(window))
     window.mainloop()
 
 if __name__ == "__main__":
