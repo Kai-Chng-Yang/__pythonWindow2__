@@ -7,6 +7,9 @@ from tkinter import ttk
 import re
 from PIL import Image,ImageTk
 
+
+
+
 class Window(tk.Tk):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
@@ -82,9 +85,9 @@ class Window(tk.Tk):
 
         #---------建立Logo--------------------
         logoImage = Image.open('logo.jpg') #讀取圖片檔
-        resizeImage = logoImage.resize((180,45),Image.LANCZOS)
+        resizeImage = logoImage.resize((300,60),Image.LANCZOS)
         self.logoTKimage = ImageTk.PhotoImage(resizeImage)
-        logoLabel = ttk.Label(self, image=self.logoTKimage,width=180)
+        logoLabel = ttk.Label(self, image=self.logoTKimage,width=300)
         logoLabel.place(x=40,y=45)
 
     def press_clear(self):
@@ -99,6 +102,10 @@ class Window(tk.Tk):
 
     def press_commit(self):
         self.check_data()
+    
+
+    
+    
 
     def check_data(self):
         dateRegex = re.compile(r"^\d\d\d\d/\d\d/\d\d$")
@@ -116,6 +123,11 @@ class Window(tk.Tk):
         except:
             weightValue = 0
 
+        
+        
+
+        
+
         if nameValue == "" or birthValue == "" or heightValue == 0 or weightValue==0 :
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0", tk.END)
@@ -123,10 +135,28 @@ class Window(tk.Tk):
             self.messageText.configure(state = tk.DISABLED)
         else:
             bmi = weightValue / (heightValue/100)**2
+            def status(bmi):
+                if bmi<18.5:
+                    message = "體重過輕"
+                elif bmi<24:
+                    message = "正常範圍"
+                elif bmi<27:
+                    message = "過重"
+                elif bmi<30:
+                    message = "輕度肥胖"
+                elif bmi<35:
+                    message = "中度肥胖"
+                else:
+                    message = "重度肥胖"
+                return message
+            
+            
+            
             message = f"{nameValue}您好:\n"
             message += f"出生年月日:{birthValue}\n"
             message += f"BMI值是:{bmi:.2f}\n"
-            message += f"狀態是:xxxx"
+            message += f"狀態是:{status(bmi)}"
+            message += f"年齡:xx歲"
 
             self.messageText.configure(state=tk.NORMAL)
             self.messageText.delete("1.0", tk.END)
