@@ -17,6 +17,9 @@ class Window(tk.Tk):
     def listBoxEventOfBottomFrame(self, listBoxValue):
         print(listBoxValue)
 
+    def comboBoxEventOfBottomFrame(self, comboValue):
+        print(comboValue)
+
         
         
 
