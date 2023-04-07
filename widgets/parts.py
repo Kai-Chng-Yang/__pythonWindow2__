@@ -81,3 +81,30 @@ class MedianFrame(ttk.LabelFrame):
         print(self.checkStringVar3.get())
         print(self.checkStringVar4.get())
         #self.w.radioButtonEventOfMedianFrame(self.checkStringVar.get())
+
+
+class BottomFrame(ttk.LabelFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.w = master
+        listFrame = ttk.LabelFrame(self,text="List Box")
+        listFrame.pack(side=tk.LEFT,padx=10,pady=10)
+        list = tk.Listbox(listFrame,height=6,width=10)
+        list.pack(side=tk.LEFT)
+        self.data = []
+        for month in range(1,13):
+            self.data.append(f"{month}月")
+        
+        for item in self.data:
+            list.insert(tk.END,item)
+        scrollBar = tk.Scrollbar(listFrame,command=list.yview)
+        scrollBar.pack(side=tk.RIGHT,fill=tk.Y)
+        list.configure(yscrollcommand=scrollBar.set)
+        list.bind('<<ListboxSelect>>', self.items_selected)
+
+    def items_selected(self, event):
+        listbox = event.widget
+        # selectedIndex -> tuple
+        (selectedIndex,) = listbox.curselection()
+        selectedValue = self.data[selectedIndex]
+        self.w.listBoxEventOfBottomFrame(selectedValue)
