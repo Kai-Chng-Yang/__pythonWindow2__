@@ -8,10 +8,11 @@ bemp_numbers = 3
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
-#top_wrapperFrame====================
+        #top_wrapperFrame==================
         top_wrapperFrame = ttk.Frame(self)
         top_wrapperFrame.pack(fill=tk.X)
-#topFrame_start======================
+        
+        #topFrame_start====================
         topFrame = ttk.LabelFrame(top_wrapperFrame,text='台北市行政區')
         length = len(datasource.sarea_list)
         self.radioStringVar = tk.StringVar()
@@ -22,19 +23,43 @@ class Window(tk.Tk):
         topFrame.pack(side=tk.LEFT)
         self.radioStringVar.set('信義區')
         self.area_data = datasource.getInfoFromArea('信義區')
-#topFrame_end==========================
+        #topFrame_end========================
 
-#sbi_warningFrame_start================
+        #sbi_warningFrame_start==============
         sbi_warningFrame= ttk.LabelFrame(top_wrapperFrame,text='可借目前不足站點')
+        columns = ('#1', '#2', '#3')
+        self.sbi_tree = ttk.Treeview(sbi_warningFrame, columns=columns, show='headings')
+        self.sbi_tree.heading('#1', text='站點')
+        self.sbi_tree.column("#1", minwidth=0, width=200)
+        self.sbi_tree.heading('#2', text='時間')
+        self.sbi_tree.column("#2", minwidth=0, width=200)
+        self.sbi_tree.heading('#3', text='總車數')
+        self.sbi_tree.column("#3", minwidth=0, width=50)
+        self.sbi_tree.pack(side=tk.LEFT)
+        self.sbi_warning_data = datasource.filter_sbi_warning_data(self.area_data,sbi_numbers)
+        for item in self.area_data:
+            self.sbi_tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
 
         sbi_warningFrame.pack(side=tk.LEFT)
-#sbi_warningFrame_end==================
+        #sbi_warningFrame_end========================
 
-#bemp_warningFrame_start===============
+        #bemp_warningFrame_start===============
         bemp_warningFrame = ttk.LabelFrame(top_wrapperFrame,text='可還目前不足站點')
+        columns = ('#1', '#2', '#3')
+        self.bemp_tree = ttk.Treeview(bemp_warningFrame, columns=columns, show='headings')
+        self.bemp_tree.heading('#1', text='站點')
+        self.bemp_tree.column("#1", minwidth=0, width=200)
+        self.bemp_tree.heading('#2', text='時間')
+        self.bemp_tree.column("#2", minwidth=0, width=200)
+        self.bemp_tree.heading('#3', text='總車數')
+        self.bemp_tree.column("#3", minwidth=0, width=50)
+        self.bemp_tree.pack(side=tk.LEFT)
+        self.sbi_warning_data = datasource.filter_sbi_warning_data(self.area_data,bemp_numbers)
+        for item in self.area_data:
+            self.bemp_tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
 
         bemp_warningFrame.pack(side=tk.LEFT)
-#bemp_warningFrame_end==================  
+        #bemp_warningFrame_end==================  
 
         bottomFrame = ttk.LabelFrame(self,text='信義區')
         bottomFrame.pack()
@@ -60,7 +85,7 @@ class Window(tk.Tk):
         for item in self.area_data:
             self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
         
-#幫treeview加scrollbar----------------
+    #幫treeview加scrollbar----------------
         scrollbar = ttk.Scrollbar(bottomFrame,command=self.tree.yview)
         scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
         self.tree.config(yscrollcommand=scrollbar.set)
@@ -80,18 +105,27 @@ class Window(tk.Tk):
 
     def radio_Event(self):
         #print(self.radioStringVar.get())
+        # Clear tree view
         for item in self.tree.get_children():
             self.tree.delete(item)
+
+        # Get selected radio button value
         area_name = self.radioStringVar.get()
+
+        # Get all station data from selected area
         self.area_data = datasource.getInfoFromArea(area_name)
 
+        # Filter data with sbi warning number
         self.sbi_warning_data = datasource.filter_sbi_warning_data(self.area_data,sbi_numbers)
         print("sbi")
         print(self.sbi_warning_data)
+
+        # Filter data with bemp warning number
         self.bemp_waring_data = datasource.filter_bemp_warning_data(self.area_data,bemp_numbers)
         print("bemp")
         print(self.bemp_waring_data)
 
+        # Display data in tree view
         for item in self.area_data:
             self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
             
