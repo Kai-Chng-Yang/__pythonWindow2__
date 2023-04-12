@@ -2,6 +2,7 @@ import datasource
 import tkinter as tk
 from tkinter import ttk
 import datetime
+from tkinter.simpledialog import askinteger
 
 sbi_numbers = 3
 bemp_numbers = 3
@@ -9,6 +10,17 @@ bemp_numbers = 3
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
+        # add menubar that contains a menu
+        self.menubar = tk.Menu(self)
+        self.config(menu=self.menubar)
+        # add command menu in menubar
+
+        self.command_menu = tk.Menu(self.menubar)
+        self.command_menu.add_command(label="設定", command=self.menu_setting_click)
+        self.command_menu.add_command(label="離開", command=self.destroy)
+        self.menubar.add_cascade(label="File", menu=self.command_menu)
+
+
         #top_wrapperFrame=================
         top_wrapperFrame = ttk.Frame(self)
         top_wrapperFrame.pack(fill=tk.X)
@@ -119,9 +131,14 @@ class Window(tk.Tk):
         
 
 
-        
+    def menu_setting_click(self):
+        global sbi_numbers,bemp_numbers
+        retVal = askinteger('設定不足', '請輸入不足可借可還數量', minvalue=0, maxvalue=5)
+        print(retVal)
+        sbi_numbers = retVal
+        bemp_numbers = retVal
 
-
+    
     
     def radio_Event(self):
         #get current datetime
