@@ -1,5 +1,5 @@
 '''
-自己打尚未找出錯誤
+自己打
 import requests
 
 sarea_list = None
