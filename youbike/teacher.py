@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter import ttk
 import datetime
 from tkinter.simpledialog import askinteger
+from PIL import Image,ImageTk
+
 
 sbi_numbers = 3
 bemp_numbers = 3
@@ -23,6 +25,13 @@ class Window(tk.Tk):
         # main Frame
         mainFrame = ttk.Frame(self)
         mainFrame.pack(padx=30,pady=50)
+
+        # logoLabel top of top_warapperFrame
+        logoImage = Image.open('logo.jpg')
+        resizeImage = logoImage.resize((320,245),Image.LANCZOS)
+        self.logoTkimage = ImageTk.PhotoImage(resizeImage)
+        logoLabel = ttk.Label(mainFrame,image=self.logoTkimage)
+        logoLabel.pack(pady=(0,50))
 
 
         #top_wrapperFrame=================
@@ -106,8 +115,12 @@ class Window(tk.Tk):
         self.tree.column("#7", minwidth=0, width=30)
         self.tree.pack(side=tk.LEFT)
 
+        # self.tree addItem
         for item in self.area_data:
-            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
+            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']],tags=item['sna'])
+
+        # self.tree bind event
+        self.tree.bind('<<TreeviewSelect>>',self.treeSelected)
         
         #幫treeview加scrollbar-------------------
         scrollbar = ttk.Scrollbar(self.bottomFrame,command=self.tree.yview)
@@ -133,6 +146,17 @@ class Window(tk.Tk):
         self.tree.heading(col, command=lambda: self.sortby(col, 0))
     '''
         
+    def treeSelected(self,event):
+        selectedTree = event.widget
+        itemTag = selectedTree.selection()[0]
+        itemDic = selectedTree.item(itemTag)
+        siteName = itemDic['tags'][0]
+        for item in self.area_data:
+            if siteName == item['sna']:
+                print(item)
+                break
+
+
 
 
     def menu_setting_click(self):
