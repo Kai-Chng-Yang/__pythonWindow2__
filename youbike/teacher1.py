@@ -7,6 +7,8 @@ from tkinter.simpledialog import askinteger
 from messageWindow import MapDisplay
 
 
+
+
 sbi_numbers = 3
 bemp_numbers = 3
 
@@ -162,7 +164,6 @@ class Window(tk.Tk):
 
         #顯示地圖window
         mapDisplay = MapDisplay(self,selected_data)
-        mapDisplay.transient(self)
         
     def menu_setting_click(self):
         global sbi_numbers,bemp_numbers
