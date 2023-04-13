@@ -7,8 +7,6 @@ from tkinter.simpledialog import askinteger
 from messageWindow import MapDisplay
 
 
-
-
 sbi_numbers = 3
 bemp_numbers = 3
 
@@ -23,6 +21,7 @@ class Window(tk.Tk):
         self.command_menu.add_command(label="設定", command=self.menu_setting_click)
         self.command_menu.add_command(label="離開", command=self.destroy)
         self.menubar.add_cascade(label="File", menu=self.command_menu)
+        self.menubar.add_cascade(label='查詢')
 
         
         # main Frame
@@ -141,6 +140,7 @@ class Window(tk.Tk):
 
     '''
     self.tree.bind('<ButtonRelease-1>',self.sortby)
+
     def sortby(self,event):
         col = self.tree.identify_column(event.x)
         items = [(self.tree.set(k, col), k) for k in self.tree.get_children('')]
@@ -159,12 +159,13 @@ class Window(tk.Tk):
         siteName = itemDic['tags'][0]
         for item in self.area_data:
             if siteName == item['sna']:
-                selected_data = item
+                selectd_data = item
                 break
-
-        #顯示地圖window
-        mapDisplay = MapDisplay(self,selected_data)
         
+        #顯示地圖window
+        mapDisplay = MapDisplay(self,selectd_data)
+        
+    #File
     def menu_setting_click(self):
         global sbi_numbers,bemp_numbers
         retVal = askinteger(f"目前設定不足數量:{sbi_numbers}",
@@ -174,6 +175,14 @@ class Window(tk.Tk):
         sbi_numbers = retVal
         bemp_numbers = retVal       
 
+    # 查詢
+    def menu_search_click(self):
+        
+        siteStr = askinteger('查詢的站點名:{sna}', '請輸入欲查詢的站點名:{sna}')
+        print(siteStr)
+        for item in self.area_data:
+            if siteStr in (item['sna']):
+                print(siteStr)
 
     def radio_Event(self):
         #get current datetime
@@ -213,7 +222,7 @@ class Window(tk.Tk):
 
         # Display data in tree view
         for item in self.area_data:
-            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
+            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']],tags=item['sna'])
 
         for item in self.sbi_warning_data:
             self.sbi_tree.insert('',tk.END,values=[item['sna'][11:],item['sbi'],item['bemp']])
@@ -222,7 +231,7 @@ class Window(tk.Tk):
             self.bemp_tree.insert('',tk.END,values=[item['sna'][11:],item['sbi'],item['bemp']])
 
         
-        
+    
         
 
 def main():
