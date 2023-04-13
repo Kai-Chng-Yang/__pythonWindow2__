@@ -151,14 +151,19 @@ class Window(tk.Tk):
 
     def treeSelected(self,event):
         selectedTree = event.widget
+        if len(selectedTree.selection()) == 0 : return
         itemTag = selectedTree.selection()[0]
         itemDic = selectedTree.item(itemTag)
         siteName = itemDic['tags'][0]
         for item in self.area_data:
             if siteName == item['sna']:
-                print(item)
+                selected_data = item
                 break
 
+        #顯示地圖window
+        mapDisplay = MapDisplay(self,selected_data)
+        mapDisplay.transient(self)
+        
     def menu_setting_click(self):
         global sbi_numbers,bemp_numbers
         retVal = askinteger(f"目前設定不足數量:{sbi_numbers}",
