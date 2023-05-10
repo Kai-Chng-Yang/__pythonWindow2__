@@ -3,6 +3,8 @@
 '''
 import pandas_datareader.data as pdr
 import yfinance as yf
+import os
+from datetime import datetime
 
 def get_stock_data(stockid):
     '''
@@ -10,6 +12,16 @@ def get_stock_data(stockid):
     '''
     yf.pdr_override()
     stockid_str = f'{stockid}.TW'    
+    current = os.path.abspath("./")
+    current_data = datetime.now()
+    filename = f"{stockid}_{current_data.year}_{current_data.month}_{current_data.day}.csv"
+    csv_file_path = os.path.join(current, "data", filename)
+    if not os.path.exists(csv_file_path):
+        stock_dataFrame = pdr.get_data_yahoo(stockid_str)
+        stock_dataFrame.to_csv(csv_file_path)
+    else:
+        print("讀取檔案")
+        
     stock_dataFrame = pdr.get_data_yahoo(stockid_str)
     stock_dataFrame1 = stock_dataFrame.reset_index()
     stock_dataFrame1['Date']= stock_dataFrame1['Date'].map(lambda x:f'{x.year}-{x.month}-{x.day}')

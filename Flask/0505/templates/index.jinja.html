@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="container-md">
-    <div class="table-responsive">
+    <div class="table-responsive" style="max-height: 400px; overflow-y: scroll;">
         <table class="table">
             <thead>
                 <tr>
@@ -20,19 +20,24 @@
                     <th>收盤2</th>
                     <th>成交量</th>
                 </tr>
-                
+
             </thead>
             <tbody>
                 {% for rows in data %}
                 <tr>
                     {% for item in rows%}
-                    <td>{{ item }}</td>
+                        {% if loop.first %}
+                        <td>{{item}}</td>
+                        {% elif loop.last %}
+                        <td>{{ "{:,d}".format(item) }}</td>
+                        {% else %}
+                        <td>{{ "{:.2f}".format(item) }}</td>
+                        {% endif %}
                     {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
 </div>
 {% endblock %}
