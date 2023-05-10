@@ -7,5 +7,32 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{{ super() }}
+<div class="container-md">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>開盤</th>
+                    <th>最高</th>
+                    <th>最低</th>
+                    <th>收盤1</th>
+                    <th>收盤2</th>
+                    <th>成交量</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+                {% for rows in data %}
+                <tr>
+                    {% for item in rows%}
+                    <td>{{ item }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
 {% endblock %}
