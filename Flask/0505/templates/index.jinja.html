@@ -1,5 +1,11 @@
+{% extends "base.jinja.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{{ stock2303['2023-01-03':] }}
+{{ stock }}
 {% endblock %}

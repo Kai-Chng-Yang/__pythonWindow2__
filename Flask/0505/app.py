@@ -1,20 +1,13 @@
-
-
 #執行 flask --app app run --debug
 
 from flask import Flask,render_template
-import pandas_datareader.data as pdr
-import yfinance as yf
-
+import datasource
 
 app = Flask(__name__)
 @app.route("/")
 def index():
-    yf.pdr_override()
-    tw_2303 = pdr.get_data_yahoo('2303.TW')
-    series_2303 = tw_2303['Adj Close']
-    return render_template("index.jinja.html",stock2303=series_2303)
-
+    stock_data = datasource.get_stock_data(stockid=2303)
+    return  render_template("index.jinja.html",stockid=2303,stock_data=stock_data)
 
 @app.route("/features/")
 def features():
